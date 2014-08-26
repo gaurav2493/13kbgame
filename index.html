@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+  </style>
+</head>	
+<body>
+  <canvas id="myCanvas" width="1000" height="600"></canvas>
+  <script>
+  var x =  0;
+  var y = 15;
+  var speed = 5;
+  var canvas = document.getElementById('myCanvas');
+  var context = canvas.getContext('2d');
+  var player = new Image();
+
+  player.onload = function() {
+    context.drawImage(player, canvas.width*0.05,canvas.height*0.8-player.height);
+  };
+  player.src = 'player.png';  
+
+  function animate() {
+
+    reqAnimFrame = window.mozRequestAnimationFrame    ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame     ||
+    window.oRequestAnimationFrame
+    ;
+
+    reqAnimFrame(animate);
+
+    x += speed;
+
+    if(x <= 0 || x >= 475){
+      speed = -speed;
+    }
+
+    draw();
+  }
+
+
+  function draw() {
+
+    var  grass= new Image();
+    context.clearRect(0, canvas.height*0.85, canvas.width,grass.height );
+  grass.onload = function() {
+   // var pattern = context.createPattern(grass, 'repeat');
+
+   // context.rect(x, canvas.height*0.85, canvas.width,grass.height );
+   // context.fillStyle = pattern;
+   // context.fill();
+   context.drawImage(grass,x, canvas.height*0.85, grass.width,grass.height );
+  };
+  grass.src = 'grass.png';
+
+   /* context.clearRect(0, 0, 500, 170);
+    context.fillStyle = "#ff00ff";
+    context.fillRect(x, y, 25, 25);
+    */
+  }
+
+  animate();
+
+  </script>
+</body>
+</html>      
