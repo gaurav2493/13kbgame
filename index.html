@@ -12,10 +12,14 @@
   <canvas id="myCanvas" width="1000" height="600"></canvas>
   <script>
   var x =  0;
-  var y = 15;
+  var x1;
   var speed = -5;
-  var grassLen=20;
+  var grassLen=40;
   var gorgeSize=5;
+  var loop1=true; //for grass
+  var loop2=false; //for grass
+  var lastX;
+  var xSpawn=-10; //reinititalized in end
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
   var player = new Image();
@@ -26,6 +30,7 @@
   player.src = 'player.png';
 
   var grassX=-10 //Least position for x ; reinitialezed in end 
+  x1=canvas.width;
   function animate() {
 
     reqAnimFrame = window.mozRequestAnimationFrame    ||
@@ -36,33 +41,58 @@
 
     reqAnimFrame(animate);
 
+    if(loop1)
     x += speed;
+    if(loop2)
+    x1+= speed;
    // console.log(x);
 
    if(x < grassX){
     x=canvas.width;
-      //console.log(x+' '+grassX);
-    }
-
-    draw();
+    loop1=false;
+  }
+  if(x1 < grassX){
+    x1=canvas.width;
+    loop2=false;
+  }
+  if(x<xSpawn)
+  {
+    loop2=true;
+    //console.log("2 "+ x1);
+  }
+  else if(x1<xSpawn)
+  {
+    loop1=true;
+    //console.log("1");
   }
 
+  draw();
+}
 
-  function draw() {
 
-    var grass= new Image();
-    grass.onload = function() {
+function draw() {
 
-     for(var i=0;i<grassLen;i++)
-     {
+  var grass= new Image();
+  grass.onload = function() {
+
+    //grass loop x
+    for(var i=0;i<grassLen && loop1;i++)
+    {
       context.drawImage(grass,x+grass.width*i, canvas.height*0.85, grass.width,grass.height );
     }
-    var lastX=grass.width*grassLen;
-    context.clearRect(x+lastX,canvas.height*0.85,grass.width,grass.height);
-    if(canvas.width-lastX > grass.width*gorgeSize)
-    {
+    lastX=grass.width*grassLen;
+    if(loop1)
+      context.clearRect(x+lastX,canvas.height*0.85,grass.width,grass.height);
 
+    //grass loop x1
+
+    for(var i=0;i<grassLen && loop2;i++)
+    {
+     // alert(x1);
+      context.drawImage(grass,x1+grass.width*i, canvas.height*0.85, grass.width,grass.height );
     }
+    if(loop2)
+      context.clearRect(x1+lastX,canvas.height*0.85,grass.width,grass.height);
   };
   grass.src = 'grass.png';
 
@@ -74,7 +104,7 @@ var grass=new Image();
 grass.onload = function() {
 
   grassX=grass.width*grassLen*-1
-  console.log(grassX);
+  xSpawn=canvas.width-grass.width*gorgeSize+grassX;
 };
 grass.src="grass.png";
 </script>
