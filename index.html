@@ -22,10 +22,18 @@
   var xSpawn=-10; //reinititalized in end
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
+  var playerY;
+  var playerYDefault;
+  var jump=false;
+  var jumpDir=-5;
+  window.addEventListener('keydown', whatKey, true);
+  //var currentPLayerY=playerY;
   var player = new Image();
 
   player.onload = function() {
-    context.drawImage(player, canvas.width*0.05,canvas.height*0.8-player.height);
+    playerY=canvas.height*0.8-player.height;
+    playerYDefault=playerY;
+    context.drawImage(player, canvas.width*0.05,playerY);
   };
   player.src = 'player.png';
 
@@ -41,39 +49,39 @@
 
     reqAnimFrame(animate);
 
+    /* Grass Coding Begin*/
     if(loop1)
-    x += speed;
+      x += speed;
     if(loop2)
-    x1+= speed;
-   // console.log(x);
+      x1+= speed;
 
-   if(x < grassX){
-    x=canvas.width;
-    loop1=false;
+    if(x < grassX){
+      x=canvas.width;
+      loop1=false;
+    }
+    if(x1 < grassX){
+      x1=canvas.width;
+      loop2=false;
+    }
+    if(x<xSpawn)
+    {
+      loop2=true;
+    }
+    else if(x1<xSpawn)
+    {
+      loop1=true;
+    }
+    /* Grass Coding end*/
+
+    draw();
   }
-  if(x1 < grassX){
-    x1=canvas.width;
-    loop2=false;
-  }
-  if(x<xSpawn)
-  {
-    loop2=true;
-    //console.log("2 "+ x1);
-  }
-  else if(x1<xSpawn)
-  {
-    loop1=true;
-    //console.log("1");
-  }
-
-  draw();
-}
 
 
-function draw() {
+  function draw() {
 
-  var grass= new Image();
-  grass.onload = function() {
+    /* Grass Coding Begin*/
+    var grass= new Image();
+    grass.onload = function() {
 
     //grass loop x
     for(var i=0;i<grassLen && loop1;i++)
@@ -85,21 +93,40 @@ function draw() {
       context.clearRect(x+lastX,canvas.height*0.85,grass.width,grass.height);
 
     //grass loop x1
-
     for(var i=0;i<grassLen && loop2;i++)
     {
-     // alert(x1);
       context.drawImage(grass,x1+grass.width*i, canvas.height*0.85, grass.width,grass.height );
     }
     if(loop2)
       context.clearRect(x1+lastX,canvas.height*0.85,grass.width,grass.height);
   };
   grass.src = 'grass.png';
+  /* Grass Coding End*/
+
+  /*Player coding Begin*/
+  if(jump)
+  {
+    var player = new Image();
+    player.onload = function() {
+      context.clearRect(canvas.width*0.05,playerY,player.width,player.height);
+      if(playerY<=canvas.width/5)
+        jumpDir*=-1;
+      playerY+=jumpDir;
+      context.drawImage(player, canvas.width*0.05,playerY);
+      if(playerY==playerYDefault)
+      {
+        jump=false;
+        jumpDir*=-1;
+      }
+    };
+    player.src = 'player.png';
+  }
+
+  /*Player Coding end*/
 
 }
 
 animate();
-console.log("hello");
 var grass=new Image();
 grass.onload = function() {
 
@@ -107,6 +134,15 @@ grass.onload = function() {
   xSpawn=canvas.width-grass.width*gorgeSize+grassX;
 };
 grass.src="grass.png";
+function whatKey(evt) 
+{
+
+  if (evt.keyCode==32) 
+  {
+    jump=true;
+    console.log("space");
+  }
+}
 </script>
 </body>
 </html>      
