@@ -13,7 +13,9 @@
   <script>
   var x =  0;
   var y = 15;
-  var speed = 5;
+  var speed = -5;
+  var grassLen=20;
+  var gorgeSize=5;
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
   var player = new Image();
@@ -21,8 +23,9 @@
   player.onload = function() {
     context.drawImage(player, canvas.width*0.05,canvas.height*0.8-player.height);
   };
-  player.src = 'player.png';  
+  player.src = 'player.png';
 
+  var grassX=-10 //Least position for x ; reinitialezed in end 
   function animate() {
 
     reqAnimFrame = window.mozRequestAnimationFrame    ||
@@ -34,9 +37,11 @@
     reqAnimFrame(animate);
 
     x += speed;
+   // console.log(x);
 
-    if(x <= 0 || x >= 475){
-      speed = -speed;
+   if(x < grassX){
+    x=canvas.width;
+      //console.log(x+' '+grassX);
     }
 
     draw();
@@ -45,26 +50,33 @@
 
   function draw() {
 
-    var  grass= new Image();
-    context.clearRect(0, canvas.height*0.85, canvas.width,grass.height );
-  grass.onload = function() {
-   // var pattern = context.createPattern(grass, 'repeat');
+    var grass= new Image();
+    grass.onload = function() {
 
-   // context.rect(x, canvas.height*0.85, canvas.width,grass.height );
-   // context.fillStyle = pattern;
-   // context.fill();
-   context.drawImage(grass,x, canvas.height*0.85, grass.width,grass.height );
+     for(var i=0;i<grassLen;i++)
+     {
+      context.drawImage(grass,x+grass.width*i, canvas.height*0.85, grass.width,grass.height );
+    }
+    var lastX=grass.width*grassLen;
+    context.clearRect(x+lastX,canvas.height*0.85,grass.width,grass.height);
+    if(canvas.width-lastX > grass.width*gorgeSize)
+    {
+
+    }
   };
   grass.src = 'grass.png';
 
-   /* context.clearRect(0, 0, 500, 170);
-    context.fillStyle = "#ff00ff";
-    context.fillRect(x, y, 25, 25);
-    */
-  }
+}
 
-  animate();
+animate();
+console.log("hello");
+var grass=new Image();
+grass.onload = function() {
 
-  </script>
+  grassX=grass.width*grassLen*-1
+  console.log(grassX);
+};
+grass.src="grass.png";
+</script>
 </body>
 </html>      
