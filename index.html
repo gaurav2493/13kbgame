@@ -7,7 +7,7 @@
     padding: 0px;
   }
   </style>
-</head>	
+</head>
 <body>
   <canvas id="myCanvas" width="1000" height="600"></canvas>
   <script>
@@ -23,17 +23,19 @@
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
   var playerY;
+  var playerX=canvas.width*0.05;
   var playerYDefault;
   var jump=false;
   var jumpDir=-5;
+  var grass;
   window.addEventListener('keydown', whatKey, true);
   //var currentPLayerY=playerY;
   var player = new Image();
 
   player.onload = function() {
-    playerY=canvas.height*0.8-player.height;
+    playerY=canvas.height*0.85-player.height;
     playerYDefault=playerY;
-    context.drawImage(player, canvas.width*0.05,playerY);
+    context.drawImage(player,playerX,playerY);
   };
   player.src = 'player.png';
 
@@ -50,16 +52,16 @@
     reqAnimFrame(animate);
 
     /* Grass Coding Begin*/
-    if(loop1)
+    /*if(loop1)
       x += speed;
     if(loop2)
-      x1+= speed;
+      x1+= speed;*/
 
     if(x < grassX){
       x=canvas.width;
       loop1=false;
     }
-    if(x1 < grassX){
+    else if(x1 < grassX){
       x1=canvas.width;
       loop2=false;
     }
@@ -72,6 +74,17 @@
       loop1=true;
     }
     /* Grass Coding end*/
+
+    /*player code begin */
+    if(loop1 && loop2 && !jump && ( (x-grassX<playerX && x1>playerX+player.width)||(x1-grassX<playerX && x>playerX+player.width)))
+    {
+      console.log("OUT");
+
+    }
+    
+      
+
+    /*Player code end*/
 
     draw();
   }
@@ -90,7 +103,11 @@
     }
     lastX=grass.width*grassLen;
     if(loop1)
+    {
       context.clearRect(x+lastX,canvas.height*0.85,grass.width,grass.height);
+      x+=speed;
+    }
+      
 
     //grass loop x1
     for(var i=0;i<grassLen && loop2;i++)
@@ -98,7 +115,12 @@
       context.drawImage(grass,x1+grass.width*i, canvas.height*0.85, grass.width,grass.height );
     }
     if(loop2)
+    {
       context.clearRect(x1+lastX,canvas.height*0.85,grass.width,grass.height);
+      x1+=speed;
+    }
+
+      
   };
   grass.src = 'grass.png';
   /* Grass Coding End*/
@@ -108,11 +130,11 @@
   {
     var player = new Image();
     player.onload = function() {
-      context.clearRect(canvas.width*0.05,playerY,player.width,player.height);
+      context.clearRect(playerX,playerY,player.width,player.height);
       if(playerY<=canvas.width/5)
         jumpDir*=-1;
       playerY+=jumpDir;
-      context.drawImage(player, canvas.width*0.05,playerY);
+      context.drawImage(player, playerX,playerY);
       if(playerY==playerYDefault)
       {
         jump=false;
@@ -127,7 +149,7 @@
 }
 
 animate();
-var grass=new Image();
+grass=new Image();
 grass.onload = function() {
 
   grassX=grass.width*grassLen*-1
