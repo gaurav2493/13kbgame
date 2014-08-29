@@ -15,7 +15,7 @@
   var x1;
   var speed = -5;
   var grassLen=40;
-  var gorgeSize=5;
+  var gorgeSize=5; //5 tikmes size of grass sprite
   var loop1=true; //for grass
   var loop2=false; //for grass
   var lastX;
@@ -28,9 +28,11 @@
   var jump=false;
   var jumpDir=-5;
   var grass;
+  var obstacles=[];
   window.addEventListener('keydown', whatKey, true);
   //var currentPLayerY=playerY;
   var player = new Image();
+  setInterval(generateObstacle, 2000);
 
   player.onload = function() {
     playerY=canvas.height*0.85-player.height;
@@ -81,9 +83,6 @@
       console.log("OUT");
 
     }
-    
-      
-
     /*Player code end*/
 
     draw();
@@ -146,6 +145,12 @@
 
   /*Player Coding end*/
 
+  /*obstacle coding begin*/
+
+
+  /*obstacle coding end*/
+
+
 }
 
 animate();
@@ -156,6 +161,17 @@ grass.onload = function() {
   xSpawn=canvas.width-grass.width*gorgeSize+grassX;
 };
 grass.src="grass.png";
+
+function generateObstacle()
+{
+	console.log("generated");
+	var fire=new Image();
+	fire.onload=function(){
+		context.drawImage(fire,canvas.width*0.5,canvas.height*0.85-fire.height);
+	};
+	fire.src="fire.png";
+}
+
 function whatKey(evt) 
 {
 
