@@ -138,13 +138,6 @@
 
     /* Grass Coding End*/
 
-    for(var i=0;i<obstacleArr.length;i++)
-    {
-      obstacleArr[i].x+=speed;
-      //context.clearRect(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
-      context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
-    }
-
     /*Player coding Begin*/
     if(jump)
     {
@@ -164,7 +157,13 @@
     /*Player Coding end*/
 
     /*obstacle coding begin*/
-
+    
+    for(var i=0;i<obstacleArr.length;i++)
+    {
+      obstacleArr[i].x+=speed;
+      //context.clearRect(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+      context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+    }
 
     /*obstacle coding end*/
 
