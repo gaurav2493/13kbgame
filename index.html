@@ -34,10 +34,10 @@
 
   // Defininition for deletion of an array element
   Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
-};
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+  };
 
   var player = new Image();
   setInterval(generateObstacle, 2000);
@@ -96,9 +96,10 @@
     if(loop1 && loop2 && !jump && ( (x-grassX<playerX && x1>playerX+player.width)||(x1-grassX<playerX && x>playerX+player.width)))
     {
      // console.log("OUT");
+     location.reload();
 
-    }
-    /*Player code end*/
+   }
+   /*Player code end*/
     //console.log(loop1+" "+loop2+" "+x +" "+ xSpawn);
     draw();
   }
@@ -142,26 +143,28 @@
     if(jump)
     {
 
-        context.clearRect(playerX,playerY,player.width,player.height);
-        if(playerY<=canvas.width/5)
-          jumpDir*=-1;
-        playerY+=jumpDir;
-        context.drawImage(player, playerX,playerY);
-        if(playerY==playerYDefault)
-        {
-          jump=false;
-          jumpDir*=-1;
-        }
+      context.clearRect(playerX,playerY,player.width,player.height);
+      if(playerY<=canvas.width/5)
+        jumpDir*=-1;
+      playerY+=jumpDir;
+      context.drawImage(player, playerX,playerY);
+      if(playerY==playerYDefault)
+      {
+        jump=false;
+        jumpDir*=-1;
+      }
     }
 
     /*Player Coding end*/
 
     /*obstacle coding begin*/
-    
+
     for(var i=0;i<obstacleArr.length;i++)
     {
       obstacleArr[i].x+=speed;
-      //context.clearRect(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+      if(obstacleArr[i].x<=playerX+player.width)
+        location.reload();
+      context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
       context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
     }
 
@@ -176,14 +179,14 @@
   {
 //   console.log("generated");
 
-   var obstacle;
-   var obsImg=new Image();
-   var random=randomInt();
+var obstacle;
+var obsImg=new Image();
+var random=randomInt();
 
-   obsImg.onload=function(){
+obsImg.onload=function(){
 
-    obstacle={src:obstacleSrc[random], x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
-    obstacleArr[obstacleArr.length]=obstacle;
+  obstacle={src:obstacleSrc[random], x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
+  obstacleArr[obstacleArr.length]=obstacle;
 		//context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
 	};
 	obsImg.src=obstacleSrc[random];  
