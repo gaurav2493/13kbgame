@@ -9,6 +9,7 @@
   </style>
 </head>
 <body>
+  <h3>Space to jump, 0 for fire,1 for rock</h3>
   <canvas id="myCanvas" width="1000" height="600"></canvas>
   <script>
   var x =  0;
@@ -185,7 +186,7 @@ var random=randomInt();
 
 obsImg.onload=function(){
 
-  obstacle={src:obstacleSrc[random], x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
+  obstacle={index:random, x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
   obstacleArr[obstacleArr.length]=obstacle;
 		//context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
 	};
@@ -200,10 +201,26 @@ function whatKey(evt)
     jump=true;
     //console.log("space");
   }
+  else if(evt.keyCode==48 || evt.keyCode==49)
+  {
+    console.log(evt.keyCode-48);
+    delObstacle(evt.keyCode-48);
+  }
 }
 function randomInt()
 {
   return ~~(Math.random() * 2);
+}
+function delObstacle(index)
+{
+  for(var i=0;i<obstacleArr.length;i++)
+  {
+    if(obstacleArr[i].index==index)
+    {
+      context.clearRect(obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+      obstacleArr.remove(i);
+    }
+  }
 }
 </script>
 </body>
