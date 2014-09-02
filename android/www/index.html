@@ -15,7 +15,7 @@
   var x1;
   var speed = -5;
   var grassLen=5;
-  var gorgeSize=1; //X tikmes size of grass sprite
+  var gorgeSize=1; //5 tikmes size of grass sprite
   var loop1=true; //for grass
   var loop2=false; //for grass
   var lastX;
@@ -27,18 +27,21 @@
   var playerYDefault;
   var jump=false;
   var jumpDir=-5;
-  var grass;  
-  var obstacleSrc=["fire.png","rock.png"];
-  var obstacleArr=[];
+  var grass;
+  var obstacles=[];
   window.addEventListener('keydown', whatKey, true);
+  /*
+  var imageObj = new Image();
+      imageObj.onload = function() {
+        var pattern = context.createPattern(imageObj, 'repeat');
 
-  // Defininition for deletion of an array element
-  Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
-};
-
+        context.rect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = pattern;
+        context.fill();
+      };
+      imageObj.src = 'bg.jpg';
+      */
+  //var currentPLayerY=playerY;
   var player = new Image();
   setInterval(generateObstacle, 2000);
 
@@ -51,13 +54,6 @@
 
   var grassX=-10 //Least position for x ; reinitialezed in end 
   x1=canvas.width;
-  grass=new Image();
-  grass.onload = function() {
-
-    grassX=grass.width*grassLen*-1
-    xSpawn=canvas.width-grass.width*gorgeSize+grassX;
-  };
-  grass.src="water.png";
   function animate() {
 
     reqAnimFrame = window.mozRequestAnimationFrame    ||
@@ -95,7 +91,7 @@
     /*player code begin */
     if(loop1 && loop2 && !jump && ( (x-grassX<playerX && x1>playerX+player.width)||(x1-grassX<playerX && x>playerX+player.width)))
     {
-     // console.log("OUT");
+      console.log("OUT");
 
     }
     /*Player code end*/
@@ -107,7 +103,8 @@
   function draw() {
 
     /* Grass Coding Begin*/
-    
+    var grass= new Image();
+    grass.onload = function() {
 
     //grass loop x
     for(var i=0;i<grassLen && loop1;i++)
@@ -134,60 +131,57 @@
       x1+=speed;
     }
 
+      
+  };
+  grass.src = 'water.png';
+  /* Grass Coding End*/
 
-
-    /* Grass Coding End*/
-
-    for(var i=0;i<obstacleArr.length;i++)
-    {
-      obstacleArr[i].x+=speed;
-      //context.clearRect(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
-      context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
-    }
-
-    /*Player coding Begin*/
-    if(jump)
-    {
-
-        context.clearRect(playerX,playerY,player.width,player.height);
-        if(playerY<=canvas.width/5)
-          jumpDir*=-1;
-        playerY+=jumpDir;
-        context.drawImage(player, playerX,playerY);
-        if(playerY==playerYDefault)
-        {
-          jump=false;
-          jumpDir*=-1;
-        }
-    }
-
-    /*Player Coding end*/
-
-    /*obstacle coding begin*/
-
-
-    /*obstacle coding end*/
-
-
+  /*Player coding Begin*/
+  if(jump)
+  {
+    var player = new Image();
+    player.onload = function() {
+      context.clearRect(playerX,playerY,player.width,player.height);
+      if(playerY<=canvas.width/5)
+        jumpDir*=-1;
+      playerY+=jumpDir;
+      context.drawImage(player, playerX,playerY);
+      if(playerY==playerYDefault)
+      {
+        jump=false;
+        jumpDir*=-1;
+      }
+    };
+    player.src = 'player.png';
   }
 
-  animate();
+  /*Player Coding end*/
 
-  function generateObstacle()
-  {
-//   console.log("generated");
+  /*obstacle coding begin*/
 
-   var obstacle;
-   var obsImg=new Image();
-   var random=randomInt();
 
-   obsImg.onload=function(){
+  /*obstacle coding end*/
 
-    obstacle={src:obstacleSrc[random], x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
-    obstacleArr[obstacleArr.length]=obstacle;
-		//context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
+
+}
+
+animate();
+grass=new Image();
+grass.onload = function() {
+
+  grassX=grass.width*grassLen*-1
+  xSpawn=canvas.width-grass.width*gorgeSize+grassX;
+};
+grass.src="water.png";
+
+function generateObstacle()
+{
+	console.log("generated");
+	var fire=new Image();
+	fire.onload=function(){
+		context.drawImage(fire,canvas.width*0.5,canvas.height*0.85-fire.height);
 	};
-	obsImg.src=obstacleSrc[random];  
+	fire.src="fire.png";
 }
 
 function whatKey(evt) 
@@ -196,12 +190,8 @@ function whatKey(evt)
   if (evt.keyCode==32) 
   {
     jump=true;
-    //console.log("space");
+    console.log("space");
   }
-}
-function randomInt()
-{
-  return ~~(Math.random() * 2);
 }
 </script>
 </body>
