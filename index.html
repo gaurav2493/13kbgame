@@ -120,7 +120,7 @@
     lastX=grass.width*grassLen;
     if(loop1)
     {
-      context.clearRect(x+lastX,canvas.height*0.85,grass.width,grass.height);
+      context.clearRect(x+lastX,canvas.height*0.85,-speed,grass.height);
       x+=speed;
     }
 
@@ -132,7 +132,7 @@
     }
     if(loop2)
     {
-      context.clearRect(x1+lastX,canvas.height*0.85,grass.width,grass.height);
+      context.clearRect(x1+lastX,canvas.height*0.85,-speed,grass.height);
       x1+=speed;
     }
 
