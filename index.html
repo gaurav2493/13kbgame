@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+  JS13KBGAME
   <style>
   body {
     margin: 0px;
@@ -9,13 +10,14 @@
   </style>
 </head>
 <body>
-  <canvas id="myCanvas" width="1000" height="600"></canvas>
+  <h3>Space to jump, 0 for fire,1 for rock</h3>
+  <canvas id="myCanvas" width="1000" height="600" style="position: absolute; top: 150px; left: 420px; border:7px solid #111111;"></canvas>
   <script>
   var x =  0;
   var x1;
   var speed = -5;
-  var grassLen=40;
-  var gorgeSize=5; //5 tikmes size of grass sprite
+  var grassLen=5;
+  var gorgeSize=1; //X tikmes size of grass sprite
   var loop1=true; //for grass
   var loop2=false; //for grass
   var lastX;
@@ -27,10 +29,36 @@
   var playerYDefault;
   var jump=false;
   var jumpDir=-5;
-  var grass;
-  var obstacles=[];
+  var grass;  
+  var obstacleSrc=["fire.png","rock.png"];
+  var obstacleArr=[];
   window.addEventListener('keydown', whatKey, true);
-  //var currentPLayerY=playerY;
+//coloring the background
+  context.fillStyle = "#99FFFF";
+  context.fillRect(0,0,1000,600);
+
+  // Defininition for deletion of an array element
+  Array.prototype.remove = function(from, to) {
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+  };
+
+function Drawable() {
+  this.init = function(x, y) {
+    // Default variables
+    this.x = x;
+    this.y = y;
+  }
+  this.speed = 0;
+  this.canvasWidth = 0;
+  this.canvasHeight = 0;
+  // Define abstract function to be implemented in child objects
+  this.draw = function() {
+  };
+}
+
+
   var player = new Image();
   setInterval(generateObstacle, 2000);
 
@@ -43,6 +71,13 @@
 
   var grassX=-10 //Least position for x ; reinitialezed in end 
   x1=canvas.width;
+  grass=new Image();
+  grass.onload = function() {
+
+    grassX=grass.width*grassLen*-1
+    xSpawn=canvas.width-grass.width*gorgeSize+grassX;
+  };
+  grass.src="water.png";
   function animate() {
 
     reqAnimFrame = window.mozRequestAnimationFrame    ||
@@ -80,11 +115,12 @@
     /*player code begin */
     if(loop1 && loop2 && !jump && ( (x-grassX<playerX && x1>playerX+player.width)||(x1-grassX<playerX && x>playerX+player.width)))
     {
-      console.log("OUT");
+     // console.log("OUT");
+     location.reload();
 
-    }
-    /*Player code end*/
-
+   }
+   /*Player code end*/
+    //console.log(loop1+" "+loop2+" "+x +" "+ xSpawn);
     draw();
   }
 
@@ -92,47 +128,48 @@
   function draw() {
 
     /* Grass Coding Begin*/
-    var grass= new Image();
-    grass.onload = function() {
+    
 
     //grass loop x
     for(var i=0;i<grassLen && loop1;i++)
     {
+      context.clearRect(x+grass.width*i, canvas.height*0.85, grass.width,grass.height );
       context.drawImage(grass,x+grass.width*i, canvas.height*0.85, grass.width,grass.height );
     }
     lastX=grass.width*grassLen;
     if(loop1)
     {
-      context.clearRect(x+lastX,canvas.height*0.85,grass.width,grass.height);
+      context.clearRect(x+lastX,canvas.height*0.85,-speed,grass.height);
       x+=speed;
     }
-      
 
     //grass loop x1
     for(var i=0;i<grassLen && loop2;i++)
     {
+      context.clearRect(x1+grass.width*i, canvas.height*0.85, grass.width,grass.height );
       context.drawImage(grass,x1+grass.width*i, canvas.height*0.85, grass.width,grass.height );
     }
     if(loop2)
     {
-      context.clearRect(x1+lastX,canvas.height*0.85,grass.width,grass.height);
+      context.clearRect(x1+lastX,canvas.height*0.85,-speed,grass.height);
       x1+=speed;
     }
 
-      
-  };
-  grass.src = 'grass.png';
-  /* Grass Coding End*/
 
-  /*Player coding Begin*/
-  if(jump)
-  {
-    var player = new Image();
 
-    player.onload = function() {
+    /* Grass Coding End*/
+
+    /*Player coding Begin*/
+    if(jump)
+    {
+
       context.clearRect(playerX,playerY,player.width,player.height);
       if(playerY<=canvas.width/5)
         jumpDir*=-1;
+      //backbround for player jump
+      context.fillStyle = "#99FFFF";
+      context.fillRect(0,0,1000,510);
+
       playerY+=jumpDir;
       context.drawImage(player, playerX,playerY);
       if(playerY==playerYDefault)
@@ -140,40 +177,48 @@
         jump=false;
         jumpDir*=-1;
       }
-     if(playerX==grassX)
-       {context.drawImage(player, 0,0);
-} 
-    };
-    player.src = 'player.png';
+    }
+
+    /*Player Coding end*/
+
+    /*obstacle coding begin*/
+
+    for(var i=0;i<obstacleArr.length;i++)
+    {
+      obstacleArr[i].x+=speed;
+      if(obstacleArr[i].x<=playerX+player.width)
+        location.reload();
+      //background between player and obstacle
+      context.fillStyle = "#111111";
+      context.fillRect(playerX+89,300,obstacleArr[i].x-100,210);
+      context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+      
+      context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+
+    }
+
+    /*obstacle coding end*/
+
+
   }
 
-  /*Player Coding end*/
+  animate();
 
-  /*obstacle coding begin*/
+  function generateObstacle()
+  {
+//   console.log("generated");
 
+var obstacle;
+var obsImg=new Image();
+var random=randomInt();
 
-  /*obstacle coding end*/
+obsImg.onload=function(){
 
-
-}
-
-animate();
-grass=new Image();
-grass.onload = function() {
-
-  grassX=grass.width*grassLen*-1
-  xSpawn=canvas.width-grass.width*gorgeSize+grassX;
-};
-grass.src="grass.png";
-
-function generateObstacle()
-{
-  console.log("generated");
-  var fire=new Image();
-  fire.onload=function(){
-    context.drawImage(fire,canvas.width*0.5,canvas.height*0.85-fire.height);
+  obstacle={index:random, x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
+  obstacleArr[obstacleArr.length]=obstacle;
+    //context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
   };
-  fire.src="fire.png";
+  obsImg.src=obstacleSrc[random];  
 }
 
 function whatKey(evt) 
@@ -182,9 +227,29 @@ function whatKey(evt)
   if (evt.keyCode==32) 
   {
     jump=true;
-    console.log("space");
+    //console.log("space");
+  }
+  else if(evt.keyCode==48 || evt.keyCode==49)
+  {
+    console.log(evt.keyCode-48);
+    delObstacle(evt.keyCode-48);
+  }
+}
+function randomInt()
+{
+  return ~~(Math.random() * 2);
+}
+function delObstacle(index)
+{
+  for(var i=0;i<obstacleArr.length;i++)
+  {
+    if(obstacleArr[i].index==index)
+    {
+      context.clearRect(obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+      obstacleArr.remove(i);
+    }
   }
 }
 </script>
 </body>
-</html>     
+</html>      
