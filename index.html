@@ -31,6 +31,7 @@
   var grass;  
   var obstacleSrc=["fire.png","rock.png"];
   var obstacleArr=[];
+  var gameOver=false;
   window.addEventListener('keydown', whatKey, true);
 
   // Defininition for deletion of an array element
@@ -97,7 +98,8 @@
     if(loop1 && loop2 && !jump && ( (x-grassX<playerX && x1>playerX+player.width)||(x1-grassX<playerX && x>playerX+player.width)))
     {
      // console.log("OUT");
-     location.reload();
+     gameOver=true;
+     //location.reload();
 
    }
    /*Player code end*/
@@ -141,7 +143,17 @@
     /* Grass Coding End*/
 
     /*Player coding Begin*/
-    if(jump)
+    if(gameOver)
+    {
+      context.clearRect(playerX,playerY,player.width,player.height);
+      playerY-=jumpDir;
+      context.drawImage(player, playerX,playerY);
+      if(playerY+player.width>canvas.height)
+      {
+        location.reload();
+      }
+    }
+    else if(jump)
     {
 
       context.clearRect(playerX,playerY,player.width,player.height);
@@ -164,7 +176,8 @@
     {
       obstacleArr[i].x+=speed;
       if(obstacleArr[i].x<=playerX+player.width)
-        location.reload();
+        gameOver=true;
+        //location.reload();
       context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
       context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
     }
