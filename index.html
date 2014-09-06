@@ -34,6 +34,18 @@
   var gameOver=false;
   window.addEventListener('keydown', whatKey, true);
 
+  /*Set Background*/
+  var bg = new Image();
+  bg.onload = function() {
+    var pattern = context.createPattern(bg, 'repeat');
+
+    context.rect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = pattern;
+    context.fill();
+  };
+  bg.src = 'bg.jpg';
+
+
   // Defininition for deletion of an array element
   Array.prototype.remove = function(from, to) {
     var rest = this.slice((to || from) + 1 || this.length);
@@ -145,6 +157,7 @@
     /*Player coding Begin*/
     if(gameOver)
     {
+
       context.clearRect(playerX,playerY,player.width,player.height);
       playerY-=jumpDir;
       context.drawImage(player, playerX,playerY);
@@ -156,6 +169,7 @@
     else if(jump)
     {
 
+      
       context.clearRect(playerX,playerY,player.width,player.height);
       if(playerY<=canvas.width/5)
         jumpDir*=-1;
@@ -178,19 +192,19 @@
       if(obstacleArr[i].x<=playerX+player.width)
         gameOver=true;
         //location.reload();
-      context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
-      context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+        context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+        context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+      }
+
+      /*obstacle coding end*/
+
+
     }
 
-    /*obstacle coding end*/
+    animate();
 
-
-  }
-
-  animate();
-
-  function generateObstacle()
-  {
+    function generateObstacle()
+    {
 //   console.log("generated");
 
 var obstacle;
