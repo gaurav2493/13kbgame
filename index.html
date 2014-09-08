@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+  JS13KBGAME
   <style>
   body {
     margin: 0px;
@@ -10,7 +11,11 @@
 </head>
 <body>
   <h3>Space to jump, 0 for fire,1 for rock</h3>
+<<<<<<< HEAD
   <canvas id="myCanvas" width="1000" height="600"></canvas>
+=======
+  <canvas id="myCanvas" width="1000" height="600" style="position: absolute; top: 150px; left: 420px; border:7px solid #111111;"></canvas>
+>>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
   <script>
   var x =  0;
   var x1;
@@ -31,8 +36,15 @@
   var grass;  
   var obstacleSrc=["fire.png","rock.png"];
   var obstacleArr=[];
+<<<<<<< HEAD
   var gameOver=false;
   window.addEventListener('keydown', whatKey, true);
+=======
+  window.addEventListener('keydown', whatKey, true);
+//coloring the background
+  context.fillStyle = "#99FFFF";
+  context.fillRect(0,0,1000,600);
+>>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
 
   // Defininition for deletion of an array element
   Array.prototype.remove = function(from, to) {
@@ -41,6 +53,24 @@
     return this.push.apply(this, rest);
   };
 
+<<<<<<< HEAD
+=======
+function Drawable() {
+  this.init = function(x, y) {
+    // Default variables
+    this.x = x;
+    this.y = y;
+  }
+  this.speed = 0;
+  this.canvasWidth = 0;
+  this.canvasHeight = 0;
+  // Define abstract function to be implemented in child objects
+  this.draw = function() {
+  };
+}
+
+
+>>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
   var player = new Image();
   setInterval(generateObstacle, 2000);
 
@@ -98,8 +128,12 @@
     if(loop1 && loop2 && !jump && ( (x-grassX<playerX && x1>playerX+player.width)||(x1-grassX<playerX && x>playerX+player.width)))
     {
      // console.log("OUT");
+<<<<<<< HEAD
      gameOver=true;
      //location.reload();
+=======
+     location.reload();
+>>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
 
    }
    /*Player code end*/
@@ -143,6 +177,7 @@
     /* Grass Coding End*/
 
     /*Player coding Begin*/
+<<<<<<< HEAD
     if(gameOver)
     {
       context.clearRect(playerX,playerY,player.width,player.height);
@@ -154,11 +189,18 @@
       }
     }
     else if(jump)
+=======
+    if(jump)
+>>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
     {
 
       context.clearRect(playerX,playerY,player.width,player.height);
       if(playerY<=canvas.width/5)
         jumpDir*=-1;
+      //backbround for player jump
+      context.fillStyle = "#99FFFF";
+      context.fillRect(0,0,1000,510);
+
       playerY+=jumpDir;
       context.drawImage(player, playerX,playerY);
       if(playerY==playerYDefault)
@@ -176,6 +218,7 @@
     {
       obstacleArr[i].x+=speed;
       if(obstacleArr[i].x<=playerX+player.width)
+<<<<<<< HEAD
         gameOver=true;
         //location.reload();
       context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
@@ -183,7 +226,30 @@
     }
 
     /*obstacle coding end*/
+=======
+        location.reload();
+      //background between player and obstacle
+      context.fillStyle = "#111111";
+      context.fillRect(playerX+89,300,obstacleArr[i].x-100,210);
+      context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
+      
+      context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
 
+    }
+>>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
+
+    /*obstacle coding end*/
+
+<<<<<<< HEAD
+  }
+
+  animate();
+
+  function generateObstacle()
+  {
+//   console.log("generated");
+
+=======
 
   }
 
@@ -193,6 +259,7 @@
   {
 //   console.log("generated");
 
+>>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
 var obstacle;
 var obsImg=new Image();
 var random=randomInt();
@@ -201,9 +268,15 @@ obsImg.onload=function(){
 
   obstacle={index:random, x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
   obstacleArr[obstacleArr.length]=obstacle;
+<<<<<<< HEAD
 		//context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
 	};
 	obsImg.src=obstacleSrc[random];  
+=======
+    //context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
+  };
+  obsImg.src=obstacleSrc[random];  
+>>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
 }
 
 function whatKey(evt) 
