@@ -1,32 +1,27 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    <style> 
-    div {
-        border: 2px solid #a1a1a1;
-        margin-top: 125px;
-        padding: 10px 40px; 
-        background: #dddddd;
-        width: 600px;
-        float: center;
-        border-radius: 25px;
-    }
-    </style>
+  <style>
+
+  
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+
+
+  </style>
 </head>
 <body>
-<<<<<<< HEAD
-  <h3>Space to jump, 0 for fire,1 for rock</h3>
-<<<<<<< HEAD
-  <canvas id="myCanvas" width="1000" height="600"></canvas>
-=======
-  <canvas id="myCanvas" width="1000" height="600" style="position: absolute; top: 150px; left: 420px; border:7px solid #111111;"></canvas>
->>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
+  <h2><center>Space to Jump, 'a' for Fire,'s' for Rock,'d' for Water</center></h2>
+  <canvas id="myCanvas" width="1000" height="600" style="border:6px solid #111111; background: #99D9EA;" ></canvas>
   <script>
   var x =  0;
   var x1;
-  var speed = -5;
-  var grassLen=5;
-  var gorgeSize=1; //X tikmes size of grass sprite
+  var score=0;
+  var speed = -10;
+  var grassLen=30;
+  var gorgeSize=7; //X tikmes size of grass sprite
   var loop1=true; //for grass
   var loop2=false; //for grass
   var lastX;
@@ -37,32 +32,12 @@
   var playerX=canvas.width*0.05;
   var playerYDefault;
   var jump=false;
-  var jumpDir=-5;
+  var jumpDir=-5,jumpDir2=-5;
   var grass;  
-  var obstacleSrc=["fire.png","rock.png"];
+  var obstacleSrc=["fire.png","rock.png","water.png"];
   var obstacleArr=[];
-<<<<<<< HEAD
   var gameOver=false;
   window.addEventListener('keydown', whatKey, true);
-=======
-  window.addEventListener('keydown', whatKey, true);
-//coloring the background
-  context.fillStyle = "#99FFFF";
-  context.fillRect(0,0,1000,600);
->>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
-
-  /*Set Background*/
-  var bg = new Image();
-  bg.onload = function() {
-    var pattern = context.createPattern(bg, 'repeat');
-
-    context.rect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = pattern;
-    context.fill();
-  };
-  bg.src = 'bg.jpg';
-
-
   // Defininition for deletion of an array element
   Array.prototype.remove = function(from, to) {
     var rest = this.slice((to || from) + 1 || this.length);
@@ -70,33 +45,30 @@
     return this.push.apply(this, rest);
   };
 
-<<<<<<< HEAD
-=======
-function Drawable() {
-  this.init = function(x, y) {
-    // Default variables
-    this.x = x;
-    this.y = y;
-  }
-  this.speed = 0;
-  this.canvasWidth = 0;
-  this.canvasHeight = 0;
-  // Define abstract function to be implemented in child objects
-  this.draw = function() {
-  };
-}
-
-
->>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
   var player = new Image();
-  setInterval(generateObstacle, 2000);
+  setInterval(generateObstacle, 1700);
+
+  var currenttime = new Date();
+  
 
   player.onload = function() {
+    var starttime = currenttime.getSeconds();
     playerY=canvas.height*0.85-player.height;
     playerYDefault=playerY;
     context.drawImage(player,playerX,playerY);
   };
   player.src = 'player.png';
+
+  //cloud background
+  var img = new Image();
+  img.src = 'cloud.png';
+  img.onload = function(){
+    for (var w = 0; w < canvas.width-img.width; w += img.width+70) {
+     // for (var h = 0; h < 100; h  += img.height) {
+        context.drawImage(img, w, 20);
+     // }
+    }
+  }
 
   var grassX=-10 //Least position for x ; reinitialezed in end 
   x1=canvas.width;
@@ -106,7 +78,7 @@ function Drawable() {
     grassX=grass.width*grassLen*-1
     xSpawn=canvas.width-grass.width*gorgeSize+grassX;
   };
-  grass.src="water.png";
+  grass.src="grass.png";
   function animate() {
 
     reqAnimFrame = window.mozRequestAnimationFrame    ||
@@ -144,25 +116,25 @@ function Drawable() {
     /*player code begin */
     if(loop1 && loop2 && !jump && ( (x-grassX<playerX && x1>playerX+player.width)||(x1-grassX<playerX && x>playerX+player.width)))
     {
-     // console.log("OUT");
-<<<<<<< HEAD
      gameOver=true;
+     
      //location.reload();
-=======
-     location.reload();
->>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
 
    }
    /*Player code end*/
-    //console.log(loop1+" "+loop2+" "+x +" "+ xSpawn);
-    draw();
-  }
+
+   draw();
+ }
 
 
-  function draw() {
+//scoring board
 
-    /* Grass Coding Begin*/
-    
+
+
+function draw() {
+
+  /* Grass Coding Begin*/
+    //console.log(score);
 
     //grass loop x
     for(var i=0;i<grassLen && loop1;i++)
@@ -194,32 +166,24 @@ function Drawable() {
     /* Grass Coding End*/
 
     /*Player coding Begin*/
-<<<<<<< HEAD
     if(gameOver)
-    {
-
+    { 
       context.clearRect(playerX,playerY,player.width,player.height);
-      playerY-=jumpDir;
+      playerY-=jumpDir2;
       context.drawImage(player, playerX,playerY);
+
       if(playerY+player.width>canvas.height)
       {
-        location.reload();
+
+        location.href="index.html?score="+score;
       }
     }
     else if(jump)
-=======
-    if(jump)
->>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
     {
 
-      
       context.clearRect(playerX,playerY,player.width,player.height);
       if(playerY<=canvas.width/5)
         jumpDir*=-1;
-      //backbround for player jump
-      context.fillStyle = "#99FFFF";
-      context.fillRect(0,0,1000,510);
-
       playerY+=jumpDir;
       context.drawImage(player, playerX,playerY);
       if(playerY==playerYDefault)
@@ -237,38 +201,16 @@ function Drawable() {
     {
       obstacleArr[i].x+=speed;
       if(obstacleArr[i].x<=playerX+player.width)
-<<<<<<< HEAD
         gameOver=true;
         //location.reload();
         context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
         context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
       }
 
-<<<<<<< HEAD
       /*obstacle coding end*/
-=======
-    /*obstacle coding end*/
-=======
-        location.reload();
-      //background between player and obstacle
-      context.fillStyle = "#111111";
-      context.fillRect(playerX+89,300,obstacleArr[i].x-100,210);
-      context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
-      
-      context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
->>>>>>> master
+
 
     }
->>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
-
-<<<<<<< HEAD
-    }
-=======
-    /*obstacle coding end*/
-
-<<<<<<< HEAD
-  }
->>>>>>> master
 
     animate();
 
@@ -276,34 +218,18 @@ function Drawable() {
     {
 //   console.log("generated");
 
-=======
-
-  }
-
-  animate();
-
-  function generateObstacle()
-  {
-//   console.log("generated");
-
->>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
 var obstacle;
 var obsImg=new Image();
-var random=randomInt();
+//gorgeSize=randomInt(10,20);
+var random=randomInt(0,3);
 
 obsImg.onload=function(){
 
   obstacle={index:random, x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
   obstacleArr[obstacleArr.length]=obstacle;
-<<<<<<< HEAD
-		//context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
-	};
-	obsImg.src=obstacleSrc[random];  
-=======
     //context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
   };
   obsImg.src=obstacleSrc[random];  
->>>>>>> 77138cdc2ddeba7aa1de0c14a386be1967461cd6
 }
 
 function whatKey(evt) 
@@ -314,56 +240,67 @@ function whatKey(evt)
     jump=true;
     //console.log("space");
   }
-  else if(evt.keyCode==48 || evt.keyCode==49)
+
+  else if(evt.keyCode==65)
+  {
+    console.log(0);
+    delObstacle(0);
+  }
+  else if(evt.keyCode==83)
+  {
+    console.log(1);
+    delObstacle(1);
+  }
+
+  else if(evt.keyCode==68)
+  {
+    console.log(2);
+    delObstacle(2);
+  }  
+
+  else if(evt.keyCode==80)
+  {
+    alert("press OK to continue");
+  }
+  /*else if(evt.keyCode==48 || evt.keyCode==49)
   {
     console.log(evt.keyCode-48);
     delObstacle(evt.keyCode-48);
-  }
+  }*/
 }
-function randomInt()
+function randomInt(min,max)
 {
-  return ~~(Math.random() * 2);
+  return min+ ~~(Math.random() * max);
 }
 function delObstacle(index)
 {
+  context.clearRect(canvas.width*.85,canvas.height*.10-50,150,60);
+
   for(var i=0;i<obstacleArr.length;i++)
   {
     if(obstacleArr[i].index==index)
     {
+
       context.clearRect(obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
       obstacleArr.remove(i);
+      score+=5;
+      context.fillStyle = '#00A300';
+      context.fillText(score,canvas.width*.85,canvas.height*.10);
+
+      return ;
     }
+
   }
+  score-=10;
+  context.fillStyle = 'red';
+  context.fillText(score,canvas.width*.85,canvas.height*.10);
+
+
 }
+
+context.font="bolder 50px Georgia";
+
+
 </script>
-=======
-    <center>
-        <div align=enter><h1>Turtles can't skate.</h1><br/>
-            <h3>You're a turtle and your aim is to prove the game title wrong and score maximum score. Press the correct key to destroy the obstacles. Good luck!</h3><br/>
-            <h4>Instructions: Space to Jump, 'a' for Fire,'s' for Rock,'d' for Water<br/>If correct key pressed '+5' to your score, else '-10'</h4>
-            <font face= "Comic Sans MS" size =5>
-            <a href= game.html>
-                PLAY NOW</a><br/><br/>
-                <span id="score"></span>
-            </font>
-        </div>
-    </center>
->>>>>>> a5a23e5857a9d9d1915c20a3f159a9910fa1728a
 </body>
-<script type="text/javascript">
-//alert(scr("score"));
-var score=scr("score");
-if (score!="not") {
-    document.getElementById("score").innerHTML="Score = "+score;
-}
-function scr(val) {
-    var result = "not",
-    tmp = [];
-    var items = location.search.substr(1).split("&");
-    for (var index = 0; index < items.length; index++) {
-        tmp = items[index].split("=");
-        if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
-    }
-    return result;
-}</script>
-</html>
+</html>    
