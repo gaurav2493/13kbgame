@@ -19,7 +19,7 @@
   var x =  0;
   var x1;
   var score=0;
-  var speed = -10;
+  var speed = -8;
   var grassLen=30;
   var gorgeSize=7; //X tikmes size of grass sprite
   var loop1=true; //for grass
@@ -47,6 +47,7 @@
 
   var player = new Image();
   setInterval(generateObstacle, 1700);
+  setInterval(function increaseSpeed(){if(speed!=-14)speed--;}, 5000);
 
   var currenttime = new Date();
   
@@ -125,8 +126,8 @@
 function draw() {
 
   /* Grass Coding Begin*/
-
     //grass loop x
+    console.log(speed);
     for(var i=0;i<grassLen && loop1;i++)
     {
       context.drawImage(grass,x+grass.width*i, canvas.height*0.85, grass.width,grass.height );
@@ -203,7 +204,6 @@ animate();
 
 function generateObstacle()
 {
-
 var obstacle;
 var obsImg=new Image();
 var random=randomInt(0,3);
