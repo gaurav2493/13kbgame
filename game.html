@@ -89,12 +89,6 @@
 
     reqAnimFrame(animate);
 
-    /* Grass Coding Begin*/
-    /*if(loop1)
-      x += speed;
-    if(loop2)
-      x1+= speed;*/
-
     if(x < grassX){
       x=canvas.width;
       loop1=false;
@@ -117,9 +111,6 @@
     if(loop1 && loop2 && !jump && ( (x-grassX<playerX && x1>playerX+player.width)||(x1-grassX<playerX && x>playerX+player.width)))
     {
      gameOver=true;
-     
-     //location.reload();
-
    }
    /*Player code end*/
 
@@ -134,12 +125,10 @@
 function draw() {
 
   /* Grass Coding Begin*/
-    //console.log(score);
 
     //grass loop x
     for(var i=0;i<grassLen && loop1;i++)
     {
-      context.clearRect(x+grass.width*i, canvas.height*0.85, grass.width,grass.height );
       context.drawImage(grass,x+grass.width*i, canvas.height*0.85, grass.width,grass.height );
     }
     lastX=grass.width*grassLen;
@@ -152,7 +141,6 @@ function draw() {
     //grass loop x1
     for(var i=0;i<grassLen && loop2;i++)
     {
-      context.clearRect(x1+grass.width*i, canvas.height*0.85, grass.width,grass.height );
       context.drawImage(grass,x1+grass.width*i, canvas.height*0.85, grass.width,grass.height );
     }
     if(loop2)
@@ -202,7 +190,7 @@ function draw() {
       obstacleArr[i].x+=speed;
       if(obstacleArr[i].x<=playerX+player.width)
         gameOver=true;
-        //location.reload();
+
         context.clearRect(obstacleArr[i].x-speed, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
         context.drawImage(obstacleArr[i].obsImg,obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].obsImg.width,obstacleArr[i].obsImg.height );
       }
@@ -211,23 +199,19 @@ function draw() {
 
 
     }
+animate();
 
-    animate();
-
-    function generateObstacle()
-    {
-//   console.log("generated");
+function generateObstacle()
+{
 
 var obstacle;
 var obsImg=new Image();
-//gorgeSize=randomInt(10,20);
 var random=randomInt(0,3);
 
 obsImg.onload=function(){
 
   obstacle={index:random, x:canvas.width,y:canvas.height*0.85-obsImg.height,obsImg:obsImg};
   obstacleArr[obstacleArr.length]=obstacle;
-    //context.drawImage(obsImg,canvas.width*0.5,canvas.height*0.85-obsImg.height);
   };
   obsImg.src=obstacleSrc[random];  
 }
@@ -238,23 +222,19 @@ function whatKey(evt)
   if (evt.keyCode==32) 
   {
     jump=true;
-    //console.log("space");
   }
 
   else if(evt.keyCode==65)
   {
-    console.log(0);
     delObstacle(0);
   }
   else if(evt.keyCode==83)
   {
-    console.log(1);
     delObstacle(1);
   }
 
   else if(evt.keyCode==68)
   {
-    console.log(2);
     delObstacle(2);
   }  
 
@@ -262,11 +242,6 @@ function whatKey(evt)
   {
     alert("press OK to continue");
   }
-  /*else if(evt.keyCode==48 || evt.keyCode==49)
-  {
-    console.log(evt.keyCode-48);
-    delObstacle(evt.keyCode-48);
-  }*/
 }
 function randomInt(min,max)
 {
@@ -286,7 +261,6 @@ function delObstacle(index)
       score+=5;
       context.fillStyle = '#00A300';
       context.fillText(score,canvas.width*.85,canvas.height*.10);
-
       return ;
     }
 
@@ -294,13 +268,8 @@ function delObstacle(index)
   score-=10;
   context.fillStyle = 'red';
   context.fillText(score,canvas.width*.85,canvas.height*.10);
-
-
 }
-
 context.font="bolder 50px Georgia";
-
-
 </script>
 </body>
 </html>   
